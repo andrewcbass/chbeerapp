@@ -11,7 +11,8 @@ var User;
 
 var userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  beers: [Object]
 });
 
 userSchema.statics.authMiddleware = function(req, res, next) {
