@@ -19,41 +19,42 @@ userSchema.statics.authMiddleware = function(req, res, next) {
   try {
     var payload = jwt.decode(token, JWT_SECRET);
   } catch(err) {
-    return res.clearCookie('authtoken').status(401).send('Authentication failed.  Invalid token.');
+    return res.clearCookie('authtoken').status(401).send();
   }
-  if(moment().isAfter(moment.unix(payload.exp))) {
-    return res.clearCookie('authtoken').status(401).send('Authentication failed.  Token expired.');
-  }
+  // we have a valid token
+
   User.findById(payload.userId).select({password: 0}).exec(function(err, user) {
     if(err || !user) {
       return res.clearCookie('authtoken').status(401).send(err);
     }
-    req.user = user;
-    next();
+    // the user exists!
+    req.user = user; // making the user document availble to the route
+    next(); // everything is good, and the request can continue
   });
 };
 
 userSchema.methods.generateToken = function() {
+  // `this` is the document you are calling the method on
   var payload = {
     userId: this._id,
-    iat: Date.now(),
-    exp: moment().add(1, 'day').unix()
+    iat: Date.now()  // issued at time
   };
+  // generate a token
   var token = jwt.encode(payload, JWT_SECRET);
   return token;
 };
 
 userSchema.statics.authenticate = function(userObj, cb) {
-  User.findOne({username: userObj.username}, function(err, user) {
-    if(err || !user) {
+  User.findOne({username: userObj.username}, function(err, dbUser) {
+    if(err || !dbUser) {
       return cb("Authentication failed.");
     }
-    bcrypt.compare(userObj.password, user.password, function(err, isGood) {
+    bcrypt.compare(userObj.password, dbUser.password, function(err, isGood) {
       if(err || !isGood) {
         return cb("Authentication failed.");
       }
-      user.password = null;
-      cb(null, user);
+      dbUser.password = null;
+      cb(null, dbUser);
     });
   });
 };
@@ -78,4 +79,5 @@ userSchema.statics.register = function(userObj, cb) {
 };
 
 User = mongoose.model('User', userSchema);
+
 module.exports = User;

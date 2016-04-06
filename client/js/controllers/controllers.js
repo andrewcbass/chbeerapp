@@ -43,9 +43,10 @@ $scope.submit = function(user) {
 });
 
 app.controller("profileCtrl", function($scope, $state, UserService) {
-
+  console.log("profile");
 });
 
 app.controller("beerCtrl", function($scope, $state, UserService) {
+  console.log("beer");
 
 });
