@@ -2,7 +2,6 @@
 
 require("dotenv").config();
 
-
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -14,7 +13,7 @@ var chalk = require('chalk');
 var error = chalk.bold.red;
 
 var PORT = process.env.PORT || 3000;
-var mongoUrl = process.env.MONGOLAB_URI || 'mongodb://localhost/testapp';
+var mongoUrl = process.env.MONGOLAB_URI;
 
 if(!process.env.JWT_SECRET) {
   console.error(error(`ERROR:  Missing process.env.JWT_SECRET.
@@ -38,6 +37,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
+app.use("/users", require("./routes/users"));
 
 app.use(function(req, res){
   res.status(404).render('404');
