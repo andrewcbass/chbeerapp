@@ -47,6 +47,8 @@ app.service('UserService', function() {
   this.set = function(user) {
     this.username = user.username;
     this._id = user._id;
+    this.email = user.email;
+    this.beers = user.beers;
   };
   this.destroy = function() {
     this.username = null;

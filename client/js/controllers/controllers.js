@@ -43,10 +43,17 @@ $scope.submit = function(user) {
 });
 
 app.controller("profileCtrl", function($scope, $state, UserService) {
+  $scope.username =  UserService.username;
+  $scope.email =  UserService.email;
+  $scope.beers =  UserService.beers;
 
 });
 
 app.controller("beerCtrl", function($scope, $state, UserService, BeerService) {
   BeerService.getBeer();
+
+  $scope.newBeer = function() {
+    BeerService.getBeer();
+  }
 
 });

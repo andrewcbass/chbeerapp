@@ -10,7 +10,8 @@ router.get("/randomBeer", User.authMiddleware,function(req, res) {
 
   request("http://api.brewerydb.com/v2/beer/random?key=3cc2b26fe7c06a97045e12b33c5abcf6", function(err, response, body) {
     var newBeer = (JSON.parse(body).data);
-    console.log('NEWBEER', newBeer);
+    
+
     res.status(err ? 400 : 200).send(err || body);
   });
 });

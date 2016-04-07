@@ -11,8 +11,14 @@ var User;
 
 var userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
+  email: { type: String, required: true},
   password: { type: String, required: true },
-  beers: [Object]
+  beers: [ {
+    beerId: String,
+    beerName: String,
+    beerStyle: String,
+    beerNotes: String
+  }]
 });
 
 userSchema.statics.authMiddleware = function(req, res, next) {
@@ -67,6 +73,7 @@ userSchema.statics.register = function(userObj, cb) {
     }
     User.create({
       username: userObj.username,
+      email: userObj.email,
       password: hash
     }, function(err, user) {
       if(err) {
