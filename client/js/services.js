@@ -5,9 +5,6 @@ var app = angular.module('testApp');
 app.service('BeerService', function($http, $state, UserService) {
   this.getBeer = function() {
     return $http.get("/users/randomBeer")
-      .then(function(res) {
-        console.log(res);
-      })
   }
 })
 

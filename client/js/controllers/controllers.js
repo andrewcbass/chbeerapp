@@ -56,4 +56,5 @@ app.controller("beerCtrl", function($scope, $state, UserService, BeerService) {
     BeerService.getBeer();
   }
 
+
 });
